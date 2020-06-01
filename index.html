@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+<title>Is 2600 Today?</title>
+
+<script>
+function getFirstDay(year, month, day)
+{
+  var first = new Date(year, month, 1).getDay();
+  return new Date(year, month, 1 + (day - first + 7) % 7);
+}
+
+function firstDay(day)
+{
+/* day is in range 0 Sun to 6 Sat
+   month is in range 0 Jan to 11 Dec
+   new Date(year, month, day, hours, minutes, seconds, milliseconds)
+   http://isitfriday.org/
+   https://www.i-programmer.info/programming/javascript/
+   6322-date-hacks-doing-javascript-date-calculations.html?start=1 */
+
+  var today = new Date();
+  var dayToday = today.getDate();
+  var month = today.getMonth();
+  var year = today.getFullYear();
+  var monthName;
+  var msg;
+
+  var meeting = getFirstDay(year, month, day);
+
+  if (meeting.getDate() == dayToday)
+    msg = "Yes!";
+  else 
+  {
+    if (meeting < today)
+      meeting = getFirstDay(year, month + 1, day);
+
+    monthName = meeting.toLocaleString("default", {month: "long"});
+    msg = "No<br />It's on " + monthName + " " + meeting.getDate();
+  }
+
+  document.getElementById('isit').innerHTML = msg;
+}
+</script>
+</head>
+
+<body onload="firstDay(5);">
+<center>
+<div id="main">
+<br />
+<font size="5" color=black>Is 2600 <b>Today</b>?</font>
+<br />
+<br />
+<span id=isit style="font-size: 100px;font-weight:bold"></span>
+</div>
+</center>
+</body>
+
+</html>
